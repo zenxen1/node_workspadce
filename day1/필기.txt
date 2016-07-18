@@ -1,0 +1,43 @@
+js - html 문서의 동적 제어
+     dom(직접적 문서 제어)
+---------------------------------------------------
+Nodejs
+js 확장하여 웹서버 프로그래밍 언어에도 적용되고 있음
+
+IIS - http 프로토콜 기반의 메카니즘(어떻게 운용되는지)
+---------------------------------------------------
+nodejs 개요
+전역변수
+전역객체
+내장모듈
+이벤트
+외부모듈
+
+nodejs : 서버에서 해석 및 실행되는 자바스크립트
+
+전역변수 :__filename, __dirname
+전역객체 :consele,process,exports
+
+사용자정의 모듈 : 모듈명.js (여러 메서드나 객체를 보유한 집합)
+
+내장 모듈의 종류
+1. 
+http
+
+C:\node_workspace\day1>npm install mysql
+mysql@2.11.1 node_modules\mysql
+├── sqlstring@2.0.1
+├── bignumber.js@2.3.0
+└── readable-stream@1.1.14 (string_decoder@0.10.31, inherits@2.0.1, isarray@0.0.1, core-util-is@1.0.2)
+
+C:\node_workspace\day1>use_mysql.js
+
+C:\node_workspace\day1>node use_mysql.js
+
+
+기존의 자바 스크립트 - 클라이언트에서만 동작하는 스크립트 언어
+nodejs는 실행시점이 서버에서 실행됨..서버 스크립트
+
+모듈을 정의할 수 있고, require
+내장모듈 - url, querystring.os,fs
+외부모듈 - npm install
