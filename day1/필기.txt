@@ -16,7 +16,7 @@ nodejs 개요
 nodejs : 서버에서 해석 및 실행되는 자바스크립트
 
 전역변수 :__filename, __dirname
-전역객체 :consele,process,exports
+전역객체 :console,process,exports
 
 사용자정의 모듈 : 모듈명.js (여러 메서드나 객체를 보유한 집합)
 
@@ -40,4 +40,13 @@ nodejs는 실행시점이 서버에서 실행됨..서버 스크립트
 
 모듈을 정의할 수 있고, require
 내장모듈 - url, querystring.os,fs
-외부모듈 - npm install
+외부모듈 - npm install mysql down
+
+<서버프로그래밍>
+asp - 윈도우기반
+php - 리눅스기반
+jsp - 자바
+nodejs 자바스크립트
+
+XML - 텍스트 기반의 데이터베이스 
+---> 쉽운 JSON javascript object notation
