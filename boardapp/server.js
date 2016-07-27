@@ -74,13 +74,13 @@ app.route("/board/write").post(function(request, response){
 	console.log(sql);
 	client.query(sql,function(error,data,fields){
 		if(!error){
-			console.log("입력성공");
+			//console.log("입력성공");
 			
 			//var content = fs.readFileSync("./board/list.html","utf8");
 			//response.end(content);
 			
 			//응답을 받는 클아이언트의 브라우저는 지정한 url로 다시 접속하라는 명령
-			response.redirect("/board/list");
+			response.redirect("/board/list/1");
 		}else{
 			console.log("입력실패");
 			response.writeHead(200,{"Content-Type" : "text/html;charset=utf-8;"});
@@ -97,15 +97,17 @@ app.route("/board/write").post(function(request, response){
 /*---------------------------------------------
 5번 board/list 요청을 처리
 ----------------------------------------------*/
-app.route("/board/list").get(function(request,response){
+app.route("/board/list/:page").get(function(request,response){
 	response.writeHead(200,{"Content-Type" : "text/html;charset=utf-8;"});
-
-
+	
+	var page=request.params.page;
+	var pageSize=3;
+	var num=(page-1)*pageSize;
 
 	//db를 조회하여 레코드를 가져와서. list.html에 전달 !!
 	//데이터 전달을 위해서는 ejs 모듈이 사용된다!!
-	client.query("select * from board order by board_id desc",function(error,records){
-		console.log(records);
+	client.query("select * from board order by board_id desc limit "+num+","+pageSize,function(error,records){
+		//console.log(records);
 
 		var content = fs.readFileSync("./board/list.html","utf8");
 
@@ -117,6 +119,65 @@ app.route("/board/list").get(function(request,response){
 
 });
 
+/*------------------------------------------------------
+/board/detail상세보기 요청 처리
+select * from board where board_id=5 = 유저가 선택한 board_id
+sever ---> "/board/detail/:board_id" 레스트풀 방식의 표현법
+html  ---> <a href="/board/detail/<%=json.board_id%>"
+--------------------------------------------------------*/
+app.route("/board/detail/:board_id").get(function(request,response){
+
+	var sql ="select * from board where board_id="+request.params.board_id;
+	//console.log(request.params.board_id);
+		
+	client.query(sql,function(error,record){
+		//console.log(record);
+		//한건의 게시물을 상세보기 페이지에 출력해보자!!
+		var page = fs.readFileSync("./board/detail.html","utf8");
+
+		response.writeHead(200,{"Content-Type" : "text/html;charset=utf-8;"});
+		response.end(ejs.render(page,{data:record}));
+
+	});
+	
+
+});
+
+/*------------------------------------------------------
+/board/delete글 한건 삭제 요청 처리
+
+--------------------------------------------------------*/
+app.route("/board/delete/:board_id").get(function(request,response){
+	var board_id=request.params.board_id;
+	var sql ="delete from board where board_id="+board_id;
+	//console.log(sql);
+	//쿼리 수행 후, 게시물 목록을 보여줘야 한다.
+	client.query(sql,function(error,data){
+		response.redirect("/board/list/1");
+	});
+});
+
+/*------------------------------------------------------
+/board/delete글 한건 삭제 요청 처리
+보안이필요한경우 post, 가볍고 보안이 필요치 않을때 get
+--------------------------------------------------------*/
+app.route("/board/edit/").post(function(request,response){
+	var postData = request.body; //post 방식으로 넘겨받은 데이터
+	var writer = postData.writer; //넘겨받은 작성자
+	var title = postData.title;
+	var content=postData.content;
+	var board_id=postData.board_id;
+
+	var sql ="update board set writer='"+writer+"',title='"+title+"',content='"+content+"'";
+	sql=sql+" where board_id="+board_id;
+	console.log(sql);
+	//쿼리 수행 후, 게시물 수정 한다.
+	
+	client.query(sql,function(error,data){
+		response.redirect("/board/detail/"+board_id);
+	});
+	
+});
 
 //2번 9999 서버가동
 var server = http.createServer(app);

@@ -35,3 +35,10 @@ create table board(
   ,hit int default 0
   ,regdate timestamp default now()
   )default charset utf8;
+
+create table game(
+  board_id int primary key auto_increment
+  ,user varchar(20)
+  ,jumsu int default 0
+  ,regdate timestamp default now()
+  )default charset utf8;
